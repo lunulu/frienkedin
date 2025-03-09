@@ -1,4 +1,4 @@
 class User < ApplicationRecord
-  has_many :interests
-  has_many :skills, class_name: "Skil"
+  has_and_belongs_to_many :interests
+  has_and_belongs_to_many :skills
 end

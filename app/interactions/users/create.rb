@@ -1,35 +1,66 @@
-class Users::Create < ActiveInteraction::Base
-  hash :params
+module Users
+  class Create < ActiveInteraction::Base
+    string :surname
+    string :name
+    string :patronymic
+    string :email
+    integer :age
+    string :nationality
+    string :country
+    string :gender
+    array :interests, default: []
+    array :skills, default: []
 
-  def execute
-    #don't do anything if params is empty
-    return unless params['name']
-    return unless params['patronymic']
-    return unless params['email']
-    return unless params['age']
-    return unless params['nationality']
-    return unless params['country']
-    return unless params['gender']
-    ##########
-    return if User.where(email: params['email'])
-    return if params['age'] <= 0 || params['age'] > 90
-    return if params['gender'] != 'male' or params['gender'] != female
+    validates :surname, :name, :patronymic, :email, :nationality, :country, :gender, presence: true
+    validates :age, numericality: { greater_than: 0, less_than_or_equal_to: 90 }
+    validate :validate_email_uniqueness
+    validate :validate_gender
 
-    user_full_name = "#{params['surname']} #{params['name']} #{params['patronymic']}"
-    user_params = params.except(:interests)
-    user = User.create(user_params.merge(user_full_name))
+    def execute
+      user = User.new(
+        surname: surname,
+        name: name,
+        patronymic: patronymic,
+        email: email,
+        age: age,
+        nationality: nationality,
+        country: country,
+        gender: gender
+      )
 
-    Intereset.where(name: params['interests']).each do |interest|
-      user.interests = user.interest + interest
-      user.save!
+      unless user.save
+        errors.merge!(user.errors)
+        return
+      end
+
+      attach_interests(user)
+      attach_skills(user)
+
+      user
     end
 
-    user_skills = []
-    params['skills'].split(',').each do |skil|
-      skil = Skil.find(name: skil)
-      user_skills =  user_skills + [skil]
+    private
+
+    def validate_email_uniqueness
+      errors.add(:email, "not unique") if User.exists?(email: email)
     end
-    user.skills = user_skills
-    user.save
+
+    def validate_gender
+      errors.add(:gender, "only male or female") unless %w[male female].include?(gender)
+    end
+
+    def attach_interests(user)
+      interests.each do |interest_name|
+        interest = Interest.find_or_create_by(name: interest_name)
+        user.interests << interest unless user.interests.include?(interest)
+      end
+    end
+
+    def attach_skills(user)
+      skills.each do |skill_name|
+        skill = Skill.find_or_create_by(name: skill_name)
+        user.skills << skill unless user.skills.include?(skill)
+      end
+    end
   end
 end

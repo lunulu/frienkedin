@@ -50,14 +50,14 @@ module Users
     end
 
     def attach_interests(user)
-      interests.each do |interest_name|
+      interests.compact_blank.each do |interest_name|
         interest = Interest.find_or_create_by(name: interest_name)
         user.interests << interest unless user.interests.include?(interest)
       end
     end
 
     def attach_skills(user)
-      skills.each do |skill_name|
+      skills.compact_blank.each do |skill_name|
         skill = Skill.find_or_create_by(name: skill_name)
         user.skills << skill unless user.skills.include?(skill)
       end

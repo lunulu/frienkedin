@@ -1,0 +1,3 @@
+<div id="<%= dom_id user %>">
+  <div><%= "#{user.name}. Interests: #{user.interests.pluck(:name).join(', ')}. Skills: #{user.skills.pluck(:name).join(', ')}." %></div>
+</div>

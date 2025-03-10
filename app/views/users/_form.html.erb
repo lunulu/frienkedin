@@ -1,0 +1,68 @@
+<%= form_with(model: user) do |form| %>
+  <% if user.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+      <ul>
+        <% user.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :name, "Имя" %>
+    <%= form.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :surname, "Фамилия" %>
+    <%= form.text_field :surname, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :patronymic, "Отчество" %>
+    <%= form.text_field :patronymic, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :email, "Email" %>
+    <%= form.email_field :email, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :age, "Возраст" %>
+    <%= form.number_field :age, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :nationality, "Национальность" %>
+    <%= form.text_field :nationality, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :country, "Страна" %>
+    <%= form.text_field :country, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :gender, "Пол" %>
+    <%= form.select :gender, %w[male female], {}, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :interests, "Интересы (выберите несколько)" %>
+    <%= form.select :interests, Interest.pluck(:name, :name), {}, multiple: true, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :skills, "Навыки (выберите несколько)" %>
+    <%= form.select :skills, Skill.pluck(:name, :name), {}, multiple: true, class: "form-control" %>
+  </div>
+
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

@@ -55,7 +55,7 @@ RSpec.describe Users::Create, type: :interaction do
   describe "обработка интересов и навыков" do
     it "добавляет существующие интересы" do
       interest = Interest.create!(name: "Музыка")
-      valid_params["interests"] = [interest.name]
+      valid_params["interests"] = [ interest.name ]
 
       result = Users::Create.run(**valid_params)
       user = result.result
@@ -64,7 +64,7 @@ RSpec.describe Users::Create, type: :interaction do
     end
 
     it "создаёт новые интересы, если их нет" do
-      valid_params["interests"] = ["Путешествия"]
+      valid_params["interests"] = [ "Путешествия" ]
 
       result = Users::Create.run(**valid_params)
       user = result.result
@@ -74,7 +74,7 @@ RSpec.describe Users::Create, type: :interaction do
 
     it "добавляет существующие навыки" do
       skill = Skill.create!(name: "Ruby")
-      valid_params["skills"] = [skill.name]
+      valid_params["skills"] = [ skill.name ]
 
       result = Users::Create.run(**valid_params)
       user = result.result
@@ -83,7 +83,7 @@ RSpec.describe Users::Create, type: :interaction do
     end
 
     it "создаёт новые навыки, если их нет" do
-      valid_params["skills"] = ["Python"]
+      valid_params["skills"] = [ "Python" ]
 
       result = Users::Create.run(**valid_params)
       user = result.result

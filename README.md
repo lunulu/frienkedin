@@ -1,24 +1,11 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+* Чтобы исправить опечатку Skil можно пойти двумя путями:
+  1. Переименовать модель и таблицу (Выбрал этот вариант)
+  2. Переименовать ассоциации: has_and_belongs_to_many :skils, class_name: 'Skil'
 
-Things you may want to cover:
+* Исправил связи на многие-ко-многим
 
-* Ruby version
+* Поднял простое rails приложение с index и new, чисто, чтобы воспользоваться dsl
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* Написал тесты для Users::Create (Представим, что для всего остального они уже были)
